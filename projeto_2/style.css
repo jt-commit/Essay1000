@@ -20,6 +20,7 @@ width: 300px;/*largura*/
 height: 30px;/*altura*/
 background-color: lightgreen;/*cor de fundo*/
 cursor: pointer;/*cria interação*/
+border-radius: 20px;
 }
 #r{/*Redações, index*/
 left: 60px;/*localização*/
@@ -28,6 +29,7 @@ width: 300px;/*largura*/
 height: 30px;/*altura*/
 background-color: lightgreen;/*cor de fundo*/
 cursor: pointer;/*cria interação*/
+border-radius: 20px;
 }
 #c{/*configurações, index*/
 left: 60px;/*localização*/
@@ -35,6 +37,7 @@ top: 180px;/*localização*/
 width: 300px;/*largura*/
 height: 30px;/*altura*/
 background-color: lightgreen;/*cor de fundo*/
+border-radius: 20px;
 }
 #pr{/*Redações*/
 left: 650px;/*localização*/
@@ -255,10 +258,10 @@ text-align: center;
 font-size: 30px;
 top: 250px;
 }
-#ni{
- color: white;
- top: 30px;
- left: 40px;;
+#ni{/*boas vindas, index*/
+ color: green;
+ bottom: 30px;
+ right: 40px;
 }
 #caixa3{
 width: 700px;
@@ -283,6 +286,7 @@ border: 2px solid green;
     background-color: white;
     color: #7EB54399;
     text-align: center;
+    border-radius: 20px;
 }
 #lapis{
     top: 260px;
