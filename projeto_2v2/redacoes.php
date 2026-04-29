@@ -1,13 +1,13 @@
 <?php
-require "redirecionar.php";
+require "redirecionar.php";//redireciona quem não está logado
 
-session_start();
-require "banco.php";
+session_start();// usuario logado
+require "banco.php";// necessita de banco.php
 
 $id = $_SESSION['USU_CODIGO'];
 
 $stmt = $pdo->prepare("SELECT * FROM USUARIO WHERE USU_CODIGO = ?");
-$stmt->execute([$id]);
+$stmt->execute([$id]);// pega a informação do nome do usuário
 
 $usuario = $stmt->fetch();
 ?>
@@ -25,8 +25,6 @@ $usuario = $stmt->fetch();
  <body>
 
  <div id="s1" class= "a"></div><!--decoração superior-->
- <div id="s2" class= "a"></div>
- <div id="s3" class= "a"></div>
 
  <img src= "assets/logo.png" id="logo" class= "a"></img><!--logo-->
  <h1 id="tit1" class= "a"> Suas Redações </h1><!--titulo-->
@@ -67,7 +65,7 @@ $usuario = $stmt->fetch();
     menu.style.display = "none";
     }};
  function abrirperfil(){
-    //tira o none do dispaly imposto no style por um clique//
+    //tira e adiciona o none//
     let menu_p = document.getElementById("menu_p");
     if(menu_p.style.display === "none"){
     menu_p.style.display = "inline-block";

@@ -1,12 +1,11 @@
 <?php
-session_start();
-require "redirecionar.php";
-require "banco.php";
+session_start();//usuário logado
+require "redirecionar.php";//redireciona para o login caso não esteja logado
+require "banco.php";//necessita de banco.php
 
-$id = $_SESSION['USU_CODIGO'];
+$id = $_SESSION['USU_CODIGO'];//recupera dados do registro
 $stmt = $pdo->prepare("SELECT * FROM USUARIO WHERE USU_CODIGO = ?");
 $stmt->execute([$id]);
-
 $usuario = $stmt->fetch();
 ?>
 
@@ -23,8 +22,6 @@ $usuario = $stmt->fetch();
     <body>
   
      <div id="s1" class= "a"></div><!--decoração superior-->
-     <div id="s2" class= "a"></div>
-     <div id="s3" class= "a"></div>
 
      <h1 id="ni" class="a">Seja Bem Vindo, <?= $usuario['USU_NOME']; ?></h1>
 

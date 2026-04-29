@@ -1,13 +1,13 @@
 <?php
-require "redirecionar.php";
+require "redirecionar.php";//redireciona quem não estiver logado
 
-session_start();
-require "banco.php";
+session_start();//usuário logado
+require "banco.php";//necessita de banco.php
 
 $id = $_SESSION['USU_CODIGO'];
 
 $stmt = $pdo->prepare("SELECT * FROM USUARIO WHERE USU_CODIGO = ?");
-$stmt->execute([$id]);
+$stmt->execute([$id]);//pega o nome do usuário
 
 $usuario = $stmt->fetch();
 ?>
@@ -25,8 +25,6 @@ $usuario = $stmt->fetch();
   <body>
 
      <div id="s1" class= "a"></div><!--decoração superior-->
-     <div id="s2" class= "a"></div>
-     <div id="s3" class= "a"></div>
 
  
      <img src= "assets/logo.png" id="logo" class= "a"></img><!--logo-->
@@ -37,18 +35,18 @@ $usuario = $stmt->fetch();
      <img src= "assets/barra.png" id="barra" 
      onclick ="abrirmenu()" alt="..." class="a"> <!--barra-->
 
-    <div id="caixa3" class="a">
+    <div id="caixa3" class="a"><!--caixa de informações-->
      
-      <h1 id="criartema" class="a">Escreva seu Tema Abaixo<h1>
+      <h1 id="criartema" class="a">Escreva seu Tema Abaixo<h1><!--texto-->
       <input type="text" placeholder="tema aqui..."
-      class="a" id="tema"></input>
-      <img src="assets/lapis.png" id="lapis" class="a"></img>
+      class="a" id="tema"></input><!--tema-->
+      <img src="assets/lapis.png" id="lapis" class="a"></img><!--lapis-->
 
     </div>
 
     <nav id="menu_p" class="a"><!--menu do perfil-->
-      <h1 id="np" class=> <?= $usuario['USU_NOME']; ?></h1>
-      <a href="logout.php" class="a" id="sair">sair</a>
+      <h1 id="np" class=> <?= $usuario['USU_NOME']; ?></h1><!--nome do usuário-->
+      <a href="logout.php" class="a" id="sair">sair</a><!--deslogar-->
     </nav>
 
     <nav id="menu" class="a"><!--menu aberto pela barra-->

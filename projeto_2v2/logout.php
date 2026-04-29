@@ -1,6 +1,6 @@
 <?php
-session_start();
-session_destroy();
-header("Location: login.php");
+session_start();//usuário logado
+session_destroy();//desloga usuário
+header("Location: login.php");//redireciona para o login
 exit;
 ?>

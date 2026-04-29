@@ -3,13 +3,14 @@ $erro = "";
 if(isset($_GET['erro'])){
   $erro = $_GET['erro'];
 }
-require "banco.php";
+require "banco.php";//necessita do banco.php para funcionar
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {//se o metódo for post
 
-    $nome = $_POST['USU_NOME'];
-    $email = $_POST['USU_EMAIL'];
+    $nome = $_POST['USU_NOME'];//pega nome
+    $email = $_POST['USU_EMAIL'];//pega email
     $senha = password_hash($_POST['USU_SENHA'], PASSWORD_DEFAULT);
+    //pega senha com hash
     
     //verifica se conta ja existe
     $check = $pdo->prepare("SELECT * FROM USUARIO WHERE USU_EMAIL = ?");
@@ -23,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $stmt = $pdo->prepare("INSERT INTO USUARIO (USU_NOME, USU_EMAIL, USU_SENHA) VALUES (?, ?, ?)");
     $stmt->execute([$nome, $email, $senha]);
 
-    header("Location: login.php");
+    header("Location: login.php");//envia para o login
     exit;
 }
 ?>
@@ -40,10 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
  <body>
 
-  <!--decoração superior-->
-  <div id="s1" class= "a"></div>
-  <div id="s2" class= "a"></div>
-  <div id="s3" class= "a"></div>
+  <div id="s1" class= "a"></div><!--decoração superior-->
 
   <img src="assets/voltar.png" id="vr" class="a"
   onclick="login()"></img><!--botão de volta-->
@@ -55,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
    <?php if($erro === "email"): ?>
     <p class="a" id="EC"> Esse usuário já está cadastrado </p>
-   <?php endif; ?>
+   <?php endif; ?><!--avisa que esse usuario ja está cadastrado-->
     
   <form method="POST">
 
