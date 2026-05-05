@@ -38,11 +38,37 @@ $usuario = $stmt->fetch();
     <div id="caixa3" class="a"><!--caixa de informações-->
      
       <h1 id="criartema" class="a">Escreva seu Tema Abaixo<h1><!--texto-->
+
       <input type="text" placeholder="tema aqui..."
       class="a" id="tema"></input><!--tema-->
-      <img src="assets/lapis.png" id="lapis" class="a"></img><!--lapis-->
+
+      <img src="assets/lapis.png" id="lapis" class="a" placeholder = "Digite algo"
+      onclick="enviar();aparecer();"><!--lapis-->
 
     </div>
+    <div id="criaredacao" class="a"><!--caixa de informações-->
+     
+      <div id=titulo class="a"><!--caixa de titulo-->
+       <h1 id="resultado" class="a"></h1><!--titulo-->
+      </div>
+
+      <div id="introducao" class="a"> <!--tema definido pelo usuário-->
+
+       <p> Introdução</p><!--caixa da introdução-->
+       <textarea id="texto" minlength="240" maxlength="480"></textarea>
+      </div>
+
+      <div id="desenvolvimento" class="a"><!--caixa do desenvolvimento-->
+       <p>Desenvolvimento</p>
+       <textarea id="texto" minlength="360" maxlength="1100"></textarea>
+      </div>
+
+      <div id="conclusao" class="a"><!--caixa da conclusão-->
+       <p>Conclusão</p>
+       <textarea id="texto" minlength="240" maxlength="480"></textarea>   
+      </div>
+      
+      <button id="cr" class="a"> Criar </button><!--criar redação-->
 
     <nav id="menu_p" class="a"><!--menu do perfil-->
       <h1 id="np" class=> <?= $usuario['USU_NOME']; ?></h1><!--nome do usuário-->
@@ -54,7 +80,17 @@ $usuario = $stmt->fetch();
      <!--abre novaredacao-->
      <button id="b2" class="a" onclick="redacoes()"> Redações </button>
      <!--abre redacoes-->
-    </nav>
+     <button id="b3" class="a" onclick="configuracoes()">Configurações </button>
+     <!--abre configurações-->
+     
+    </nav><!--quadro de configurações-->
+    <div id="configuracoes" class="a">
+       
+       <button id="fechar" class="a" onclick="FecharConfiguracoes()"> X </button>
+       <h1 id="tit2" class="a"> Configurações </h1>
+       <p id="mensagem" class="a">Não há configurações no momento</p>
+
+    </div>
 
     <script>
 
@@ -89,6 +125,25 @@ $usuario = $stmt->fetch();
         window.location.href = "redacoes.php";
         //cria o caminho de redacoes//
       };
+      function configuracoes(){//mostra as configuraçãos//
+          document.getElementById("configuracoes").style.display = "block"
+       };
+        function FecharConfiguracoes(){//oculta as configurações//
+          document.getElementById("configuracoes").style.display = "none"
+      };
+      function enviar(){//salva o tema dado por usuário//
+        let valor = document.getElementById("tema").value;
+
+        document.getElementById("resultado").innerText = valor;
+      }
+      function mostrar(){//mostra o tema dado por usuário//
+        let valor = document.getElementById("resultado").innerText;
+        console.log(valor);
+      }
+      function aparecer(){//faz a transição em nova redação//
+        document.getElementById("caixa3").style.display = "none";
+        document.getElementById("criaredacao").style.display = "block";
+      }
 
     </script>
 

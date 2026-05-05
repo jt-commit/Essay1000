@@ -38,8 +38,16 @@ $usuario = $stmt->fetch();
        <button id="c" class="a" onclick="configuracoes()"
        > Configurações </button> <!--abre configurações-->
 
-      </div>
+       </div>
 
+       <div id="configuracoes" class="a"><!--quadro de configurações-->
+       
+       <button id="fechar" class="a" onclick="FecharConfiguracoes()"> X </button>
+       <h1 id="tit2" class="a"> Configurações </h1>
+       <p id="mensagem" class="a">Não há configurações no momento</p>
+
+       </div>
+      
       <script>
 
        function novaredacao(){
@@ -50,7 +58,12 @@ $usuario = $stmt->fetch();
          window.location.href = "redacoes.php";
          //cria o caminho de redacoes//
        };
-
+        function configuracoes(){//revela configurações//
+          document.getElementById("configuracoes").style.display = "block"
+       };
+        function FecharConfiguracoes(){//oculta configurações//
+          document.getElementById("configuracoes").style.display = "none"
+        };
       </script>
 
     </body>
