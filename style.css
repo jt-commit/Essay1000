@@ -1,18 +1,23 @@
 body{
 background-color: rgb(220, 184, 148);/*cor de fundo*/
 }
-.a{
-position: absolute;/*permite mover elementos*/
+
+#caixa{/*caixa de login login.php*/
+ 
+    width: 500px;
+    height: 330px;
+    background-color: white;
+    border: 4px solid darkgreen;
+    border-radius: 35px;
+    padding: 35px;
+
+    position: absolute;
+    left: 50%;
+    top: 60%;
+    transform: translate(-50%, -50%);
 }
-#caixa{/*caixa de login, login.php*/
-top: 380px;/*localização*/
-left:540px;/*localização*/
-width: 430px;/*largura*/
-height: 300px;/*altura*/
-background-color: white;/*cor de fundo*/
-border: 4px solid darkgreen;/*borda*/
-border-radius: 10%;/*adiciona circuferência*/
-}
+
+
 #nr{/*Nova Redação, index*/
 left: 60px;/*localização*/
 top: 60px;/*localização*/
@@ -22,6 +27,7 @@ background-color: lightgreen;/*cor de fundo*/
 cursor: pointer;/*cria interação*/
 border-radius: 20px;
 }
+
 #r{/*Redações, index*/
 left: 60px;/*localização*/
 top: 120px;/*localização*/
@@ -31,6 +37,7 @@ background-color: lightgreen;/*cor de fundo*/
 cursor: pointer;/*cria interação*/
 border-radius: 20px;
 }
+
 #c{/*configurações, index*/
 left: 60px;/*localização*/
 top: 180px;/*localização*/
@@ -39,12 +46,14 @@ height: 30px;/*altura*/
 background-color: lightgreen;/*cor de fundo*/
 border-radius: 20px;
 }
+
 #pr{/*titulo Redações, redações*/
 left: 650px;/*localização*/
 top: 490px;/*localização*/
 width: 200px;/*largura*/
 height: 30px;/*altura*/
 }
+
 #s1{/*borda_superior*/
 width: 100%;/*largura*/
 height: 100px;/*altura*/
@@ -60,12 +69,16 @@ top: -100px;/*localização*/
 left: -50px;/*localização*/
 }
 #logo2{/*posição da logo central do index*/
-width: 600px;/*largura*/
-height: 480px;/*altura*/
-top: 60px;/*localização*/
-left:450px;/*localização*/
-font-size: 40px;/*tamanho da fonte*/
-}
+  display:block;
+    width:620px;
+    margin: 30px auto 20px auto;
+
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
 #tit1{/*titulo da pagina, redações*/
 color: rgb(68, 209, 68);/*cor dos simbolos*/
 background-color:#CECECE;/*cor do fundo*/
@@ -79,40 +92,44 @@ align-items: center;/*deixa objetos centralizados*/
 justify-content: center;/*deixa objetos centralizados*/
 }
 #email{/*email, login.php*/
-top: 50px;/*localização*/
-left: 80px;/*localização*/
-background-color: rgb(217,
- 203, 203);/*cor de fundo*/
-border-radius: 25%;/*circuferência*/
-height: 40px;/*altura*/
-width: 250px;/*largura*/
-padding-left: 20PX;/*espaçamento*/
+    width: 310px;
+    height: 42px;
+    border-radius: 12px;
+    border: 1px solid gray;
+    background-color: rgb(217,203,203);
+    padding-left: 15px;
+    font-size: 16px;
 }
 #senha{/*senha, login.php*/
-top: 120px;/*localização*/
-left: 80px;/*localização*/
-background-color: rgb(217, 203, 203);/*cor de fundo*/
-border-radius: 25%;/*circuferência*/
-height: 40px;/*altura*/
-width: 250px;/*largura*/
-padding-left: 20PX;/*espaçamento*/
+    width: 310px;
+    height: 42px;
+    border-radius: 12px;
+    border: 1px solid gray;
+    background-color: rgb(217,203,203);
+    padding-left: 15px;
+    font-size: 16px;
 }
 #entrar{/*entrar, login.php*/
-top: 190px;/*localização*/
-left: 160px;/*localização*/
-border-radius: 25%;/*circuferência*/
-height: 40px;/*altura*/
-width: 120px;/*largura*/
-text-align: center;/*centraliza o texto*/
-color: white;/*cor dos simbolos*/
-background-color: darkgreen;/*cor de fundo*/
-cursor: pointer;/*gera uma interação*/
+ margin: 30px auto 0 auto;
+    display:block;
+    width: 130px;
+    height: 45px;
+    border-radius: 10px;
+    color: white;
+    background-color: darkgreen;
+    border:none;
+    cursor:pointer;
+    position: relative;
+    top: 40px;
 }
 #cadastro{/*cadastro, login.php*/
-left : 90px;/*localização*/
-top : 230px;/*localização*/
-color: orange;/*cor dos simbolos*/
-cursor: pointer;/*gera uma interação*/
+    text-align:center;
+    margin-top:20px;
+    color: orange;
+    cursor:pointer;
+    position: relative;
+    top:70px;
+    left: 110px;
 }
 #perfil{/*perfil, nova redação e redações*/
 right: 150px;/*localização*/
@@ -274,4 +291,54 @@ border: 2px solid green;/*borda*/
     top: 260px;/*localização*/
     right: 70px;/*localização*/
     cursor: pointer;/*cria interação*/
+}
+
+header {
+  background: #2D5016;
+  height: 70px; /*altura*/
+  display: flex;
+  align-items: center;
+  padding: 0 40px;
+  position: relative;
+  z-index: 10;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.28);
+}
+
+header::after {
+  content: '';
+  position: absolute;
+  bottom: -5px; left: 0; right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, #4A7C2A, #7EC850, #4A7C2A);
+}
+
+.header-brand {
+  display: flexbox;
+  align-items: center;
+  text-decoration: none;
+}
+
+.header-brand-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  color: #fff;
+}
+
+.header-brand-name span {
+  color: #7EC850;
+}
+
+*{/*remove a margem branca ao redor da página*/
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.input-wrap{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:100%;
+    margin-bottom:15px;
+    gap:10px;
 }
