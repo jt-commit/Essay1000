@@ -1,0 +1,162 @@
+<?php
+require "redirecionar.php";//redireciona quem não estiver logado
+
+if(session_status() == PHP_SESSION_NONE){
+    session_start();
+}
+require "banco.php";//necessita de banco.php
+
+$id = $_SESSION['USU_CODIGO'];
+
+$stmt = $pdo->prepare("SELECT * FROM USUARIO WHERE USU_CODIGO = ?");
+$stmt->execute([$id]);//pega o nome do usuário
+
+$usuario = $stmt->fetch();
+?>
+
+<!DOCTYPE html>
+
+<html lang="pt-br">
+    
+  <head>
+
+   <link rel="stylesheet" href="style.css">
+
+  </head>
+
+  <body>
+
+     <div id="s1" class= "a"></div><!--decoração superior-->
+
+ 
+     <img src= "assets/logo.png" id="logo" class= "a"></img><!--logo-->
+
+      <img src= "assets/perfil.png" id="perfil" 
+     onclick="abrirperfil()" alt="..." class="a"><!--perfil-->
+
+     <img src= "assets/barra.png" id="barra" 
+     onclick ="abrirmenu()" alt="..." class="a"> <!--barra-->
+
+    <div id="caixa3" class="a"><!--caixa de informações-->
+     
+      <h1 id="criartema" class="a">Escreva seu Tema Abaixo</h1><!--texto-->
+
+      <input type="text" placeholder="tema aqui..."
+      class="a" id="tema"></input><!--tema-->
+
+      <img src="assets/lapis.png" id="lapis" class="a" placeholder = "Digite algo"
+      onclick="enviar();aparecer();"><!--lapis-->
+
+    </div>
+    <div id="criaredacao" class="a"><!--caixa de informações-->
+     
+      <div id="titulo" class="a">
+       <h1 id="resultado" class="a"></h1><!--titulo-->
+      </div><!--caixa de titulo-->
+
+      <div id="introducao" class="a"> <!--tema definido pelo usuário-->
+
+       <p> Introdução</p><!--caixa da introdução-->
+       <textarea id="texto1" minlength="240" maxlength="480"></textarea>
+      </div>
+
+      <div id="desenvolvimento" class="a"><!--caixa do desenvolvimento-->
+       <p>Desenvolvimento</p>
+       <textarea id="texto2" minlength="360" maxlength="1100"></textarea>
+      </div>
+
+      <div id="conclusao" class="a"><!--caixa da conclusão-->
+       <p>Conclusão</p>
+       <textarea id="texto3" minlength="240" maxlength="480"></textarea>   
+      </div>
+      
+      <button id="cr" class="a"> Criar </button><!--criar redação-->
+    </div>
+    <nav id="menu_p" class="a"><!--menu do perfil-->
+      <h1 id="np" class=> <?= $usuario['USU_NOME']; ?></h1><!--nome do usuário-->
+      <a href="logout.php" class="a" id="sair">sair</a><!--deslogar-->
+    </nav>
+
+    <nav id="menu" class="a"><!--menu aberto pela barra-->
+     <button id="b1" class="a" onclick="novaredacao()"> Nova Redação </button>
+     <!--abre novaredacao-->
+     <button id="b2" class="a" onclick="redacoes()"> Redações </button>
+     <!--abre redacoes-->
+     <button id="b3" class="a" onclick="configuracoes()">Configurações </button>
+     <!--abre configurações-->
+     
+    </nav><!--quadro de configurações-->
+    <div id="configuracoes" class="a">
+       
+       <button id="fechar" class="a" onclick="FecharConfiguracoes()"> X </button>
+       <h1 id="tit2" class="a"> Configurações </h1>
+       <p id="mensagem" class="a">Não há configurações no momento</p>
+
+    </div>
+
+    <script>
+
+     function abrirmenu(){
+
+     let menu = document.getElementById("menu");
+     let menu_p = document.getElementById("menu_p");
+
+     if(menu.style.display === "none"){
+       menu.style.display = "inline-block";
+       menu_p.style.display = "none";
+       }else{
+       menu.style.display = "none";
+      }
+     }
+     function abrirperfil(){
+     //tira o none do dispaly imposto no style por um clique//
+     let menu_p = document.getElementById("menu_p");
+     if(menu_p.style.display === "none"){
+     menu_p.style.display = "inline-block";
+     menu.style.display = "none"
+     }else{
+     //aplica o none caso esteja desabilitado por um clique//
+     menu_p.style.display = "none";
+     }};
+   
+     function novaredacao(){
+      window.location.href= "novaredacao.php";
+      //cria o caminho de novaredacao//
+      };
+     function redacoes(){
+        window.location.href = "redacoes.php";
+        //cria o caminho de redacoes//
+      };
+      function configuracoes(){//mostra as configuraçãos//
+          document.getElementById("configuracoes").style.display = "block"
+       };
+        function FecharConfiguracoes(){//oculta as configurações//
+          document.getElementById("configuracoes").style.display = "none"
+      };
+      function enviar(){//salva o tema dado por usuário//
+        let valor = document.getElementById("tema").value;
+
+        document.getElementById("resultado").innerText = valor;
+      }
+      function mostrar(){//mostra o tema dado por usuário//
+        let valor = document.getElementById("resultado").innerText;
+        console.log(valor);
+      }
+      function aparecer(){//faz a transição em nova redação//
+
+       let criaredacao = document.getElementById("criaredacao");
+
+       if(criaredacao.style.display === "none"){
+       criaredacao.style.display = "block";
+       }else{
+       criaredacao.style.display = "none";
+       }
+      };
+
+    </script>
+
+ 
+  </body>
+
+
+</html>
