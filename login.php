@@ -1,6 +1,6 @@
 <?php
 session_start();// usuário logado
-require "db.php";//necessita de conexão com o banco
+require "banco.php";//necessita de conexão com o banco
 
 // Se já estiver logado, manda direto pro index
 if (isset($_SESSION['USU_EMAIL'])) {
