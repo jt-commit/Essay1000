@@ -1,6 +1,6 @@
 <?php
 session_start();// usuário logado
-require "banco.php";//necessita de banco.php
+require "db.php";//necessita de conexão com o banco
 
 // Se já estiver logado, manda direto pro index
 if (isset($_SESSION['USU_EMAIL'])) {
@@ -12,6 +12,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {//se o metódo for post
 
     $email = $_POST['USU_EMAIL'];//pega email
     $senha = $_POST['USU_SENHA'];//pega senha
+    
+    if (!$pdo) {
+    exit('Erro de conexão com o banco.');
+}
 
     $stmt = $pdo->prepare("SELECT * FROM USUARIO WHERE USU_EMAIL = ?");
     $stmt->execute([$email]);//confere e executa o
@@ -40,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {//se o metódo for post
   </head>
   <body>
     <!--decoração superior-->
-   <div id="s1" class= "a"></div>
+   <header id="s1" class= "a"></header>
 
     <img src= "assets/logo.png" id="logo2" class= "a"></img><!--logo-->
 
@@ -57,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {//se o metódo for post
     >Entrar</button><!--entrar-->
 
     <p id="cadastro" class="a" onclick="register()"
-    >não tem uma conta? cadastre-se aqui</p><!--cadastro/link-->
+    >Cadastre-se aqui</p><!--cadastro/link-->
 
    </form>
 

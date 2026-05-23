@@ -1,7 +1,9 @@
 <?php
 require "redirecionar.php";//redireciona quem não estiver logado
 
-session_start();//usuário logado
+if(session_status() == PHP_SESSION_NONE){
+    session_start();
+}
 require "banco.php";//necessita de banco.php
 
 $id = $_SESSION['USU_CODIGO'];
@@ -30,14 +32,14 @@ $usuario = $stmt->fetch();
      <img src= "assets/logo.png" id="logo" class= "a"></img><!--logo-->
 
       <img src= "assets/perfil.png" id="perfil" 
-     onclick="abrirperfil()" alt="..." class="a"></img><!--perfil-->
+     onclick="abrirperfil()" alt="..." class="a"><!--perfil-->
 
      <img src= "assets/barra.png" id="barra" 
      onclick ="abrirmenu()" alt="..." class="a"> <!--barra-->
 
     <div id="caixa3" class="a"><!--caixa de informações-->
      
-      <h1 id="criartema" class="a">Escreva seu Tema Abaixo<h1><!--texto-->
+      <h1 id="criartema" class="a">Escreva seu Tema Abaixo</h1><!--texto-->
 
       <input type="text" placeholder="tema aqui..."
       class="a" id="tema"></input><!--tema-->
@@ -48,28 +50,28 @@ $usuario = $stmt->fetch();
     </div>
     <div id="criaredacao" class="a"><!--caixa de informações-->
      
-      <div id=titulo class="a"><!--caixa de titulo-->
+      <div id="titulo" class="a">
        <h1 id="resultado" class="a"></h1><!--titulo-->
-      </div>
+      </div><!--caixa de titulo-->
 
       <div id="introducao" class="a"> <!--tema definido pelo usuário-->
 
        <p> Introdução</p><!--caixa da introdução-->
-       <textarea id="texto" minlength="240" maxlength="480"></textarea>
+       <textarea id="texto1" minlength="240" maxlength="480"></textarea>
       </div>
 
       <div id="desenvolvimento" class="a"><!--caixa do desenvolvimento-->
        <p>Desenvolvimento</p>
-       <textarea id="texto" minlength="360" maxlength="1100"></textarea>
+       <textarea id="texto2" minlength="360" maxlength="1100"></textarea>
       </div>
 
       <div id="conclusao" class="a"><!--caixa da conclusão-->
        <p>Conclusão</p>
-       <textarea id="texto" minlength="240" maxlength="480"></textarea>   
+       <textarea id="texto3" minlength="240" maxlength="480"></textarea>   
       </div>
       
       <button id="cr" class="a"> Criar </button><!--criar redação-->
-
+    </div>
     <nav id="menu_p" class="a"><!--menu do perfil-->
       <h1 id="np" class=> <?= $usuario['USU_NOME']; ?></h1><!--nome do usuário-->
       <a href="logout.php" class="a" id="sair">sair</a><!--deslogar-->
@@ -95,17 +97,17 @@ $usuario = $stmt->fetch();
     <script>
 
      function abrirmenu(){
-     //tira e coloca o none no display//
-     let menu = document.getElementById("menu");
-     if(menu.style.display === "none"){
-     menu.style.display = "inline-block";
-     menu_p.style.display = "none"
-     //deixa visivel ao clique na barra//
-     }else{
-     menu.style.display = "none"
-     //deixa invisivel ao clique na barra//
-     }};
 
+     let menu = document.getElementById("menu");
+     let menu_p = document.getElementById("menu_p");
+
+     if(menu.style.display === "none"){
+       menu.style.display = "inline-block";
+       menu_p.style.display = "none";
+       }else{
+       menu.style.display = "none";
+      }
+     }
      function abrirperfil(){
      //tira o none do dispaly imposto no style por um clique//
      let menu_p = document.getElementById("menu_p");
@@ -141,9 +143,15 @@ $usuario = $stmt->fetch();
         console.log(valor);
       }
       function aparecer(){//faz a transição em nova redação//
-        document.getElementById("caixa3").style.display = "none";
-        document.getElementById("criaredacao").style.display = "block";
-      }
+
+       let criaredacao = document.getElementById("criaredacao");
+
+       if(criaredacao.style.display === "none"){
+       criaredacao.style.display = "block";
+       }else{
+       criaredacao.style.display = "none";
+       }
+      };
 
     </script>
 
