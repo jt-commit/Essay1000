@@ -60,9 +60,9 @@ body{
  border: 4px solid #7eb543ab;/*borda*/
  border-radius: 10%;/*adiciona circuferência*/
 }
-#caixa4{/*caixa de login, login.php*/
+#caixa4{/*caixa de login, index.php*/
  top: 140px;/*localização*/
- left: 0%;/*localização*/
+ left: 2%;/*localização*/
  width: 750px;/*largura*/
  height: 550px;/*altura*/
  background-color: rgb(213, 213, 213);/*cor de fundo*/
