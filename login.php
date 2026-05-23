@@ -44,40 +44,24 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {//se o metódo for post
   </head>
   <body>
     <!--decoração superior-->
-   <header>
-  <a class="header-brand" href="#" >
-    <span id="header-brand-name">Essay<span>1000</span></span>
-  </a>
-</header>
+   <header id="s1" class= "a"></header>
 
- <img src= "assets/logo.png" id="logo2" ></img><!--logo-->
+    <img src= "assets/logo.png" id="logo2" class= "a"></img><!--logo-->
 
-
-   
-   <div id="caixa" >
+   <div id="caixa" class="a">
    <form method="POST"><!--caso o metódo seja post-->
 
-   <div class="input-wrap">
-  <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-    <rect x="2" y="4" width="20" height="16" rx="3"/>
-    <path d="M2 7l10 7 10-7"/>
-  </svg>
-  <input type="email" name="USU_EMAIL" placeholder="Email" id="email">
-</div>
+    <input type="email" name="USU_EMAIL" placeholder="Email"
+     id="email" class="a"><!--email-->
 
-<div class="input-wrap">
-  <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-    <rect x="5" y="11" width="14" height="10" rx="2"/>
-    <path d="M8 11V7a4 4 0 018 0v4"/>
-  </svg>
-  <input type="password" name="USU_SENHA" placeholder="Senha" id="senha">
-</div>
+    <input type="password" name="USU_SENHA" placeholder="Senha"
+     id="senha" class="a"><!--senha-->
 
     <button type="submit" class="a" id="entrar"
     >Entrar</button><!--entrar-->
 
     <p id="cadastro" class="a" onclick="register()"
-    >não tem uma conta? cadastre-se aqui</p><!--cadastro/link-->
+    >Cadastre-se aqui</p><!--cadastro/link-->
 
    </form>
 
