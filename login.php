@@ -1,12 +1,10 @@
 <?php
 session_start();// usuário logado
+require_once __DIR__ . '/banco.php'; // necessita de banco.php
 require "banco.php";//necessita de conexão com o banco
 
 // Se já estiver logado, manda direto pro index
-if (isset($_SESSION['USU_EMAIL'])) {
-    header("Location: index.php");
-    exit;
-}
+
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {//se o metódo for post
 
@@ -31,6 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {//se o metódo for post
      exit;
     }
   }
+  
 ?>
 
 <!DOCTYPE html>
