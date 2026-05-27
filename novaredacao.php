@@ -42,7 +42,7 @@ $usuario = $stmt->fetch();
       <h1 id="criartema" class="a">Escreva seu Tema Abaixo</h1><!--texto-->
 
       <input type="text" placeholder="tema aqui..."
-      class="a" id="tema"></input><!--tema-->
+      class="a" maxlength="60" id="tema"></input><!--tema-->
 
       <img src="assets/lapis.png" id="lapis" class="a" placeholder = "Digite algo"
       onclick="enviar();aparecer();"><!--lapis-->
