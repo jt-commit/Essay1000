@@ -1,0 +1,1430 @@
+/* ==========================================================================
+   ESSAY1000 — FOLHA DE ESTILOS CONSOLIDADA
+   --------------------------------------------------------------------------
+   Índice:
+     1.  Tokens de tema (dark / light / hybrid)
+     2.  Reset e base global
+     3.  Utilitários (.a)
+     4.  Cabeçalho, logo, perfil, engrenagem e menus
+     5.  Controles: botões (Black Glass), inputs, textareas
+     6.  Login e cadastro
+     7.  Tela inicial: quadro de atividades (post-its) e layout legado
+     8.  Lista de redações (cards)
+     9.  Nova redação (fluxo em etapas)
+    10.  Desafio
+    11.  Configurações (janela, atalhos e painéis secundários)
+    12.  Responsivo (1024px, 900px, 700px, 600px, 480px)
+    13.  Acessibilidade (reduced motion)
+
+   Observações:
+   - Todos os IDs e classes do original foram mantidos (JS e HTML não mudam).
+   - Onde havia regras duplicadas, ficou só o valor que estava valendo.
+   - As cores agora vêm dos tokens --theme-*, então light/hybrid funcionam
+     de verdade (antes eram anulados por regras fixas com !important).
+   ========================================================================== */
+
+
+/* ==========================================================================
+   1. TOKENS DE TEMA
+   O PHP imprime <html data-theme="dark|light|hybrid">; o theme.js aplica
+   o fallback. Dark é o padrão quando não há atributo.
+   ========================================================================== */
+:root,
+html[data-theme="dark"] {
+    --theme-bg: #1c1c1e;                        /* fundo da página */
+    --theme-bg-secondary: #242426;              /* painéis grandes */
+    --theme-surface: rgba(44, 44, 46, .92);     /* cards e caixas */
+    --theme-surface-solid: #2c2c2e;             /* superfícies sem transparência */
+    --theme-surface-elevated: #3a3a3c;          /* hover e itens em destaque */
+    --theme-text: #f5f5f7;                      /* texto principal */
+    --theme-text-secondary: #98989d;            /* texto auxiliar */
+    --theme-border: rgba(255, 255, 255, .12);   /* bordas finas */
+    --theme-glass-highlight: rgba(255, 255, 255, .08); /* reflexo de vidro */
+    --theme-shadow: rgba(0, 0, 0, .38);         /* sombras */
+    --theme-accent: #0a84ff;                    /* cor de destaque */
+    --theme-accent-hover: #409cff;
+    --theme-field: rgba(28, 28, 30, .9);        /* fundo de inputs */
+    --theme-board-start: #3b2920;               /* quadro de post-its */
+    --theme-board-end: #2b211c;
+    --theme-board-frame: #191310;
+}
+
+html[data-theme="light"] {
+    --theme-bg: #f2f2f7;
+    --theme-bg-secondary: #e5e5ea;
+    --theme-surface: rgba(255, 255, 255, .78);
+    --theme-surface-solid: #ffffff;
+    --theme-surface-elevated: #ffffff;
+    --theme-text: #1d1d1f;
+    --theme-text-secondary: #6e6e73;
+    --theme-border: rgba(60, 60, 67, .18);
+    --theme-glass-highlight: rgba(255, 255, 255, .72);
+    --theme-shadow: rgba(0, 0, 0, .14);
+    --theme-accent: #007aff;
+    --theme-accent-hover: #006ee6;
+    --theme-field: rgba(255, 255, 255, .8);
+    --theme-board-start: #9b6a48;
+    --theme-board-end: #6e442d;
+    --theme-board-frame: #6c442d;
+}
+
+html[data-theme="hybrid"] {
+    --theme-bg: #303136;
+    --theme-bg-secondary: #26272b;
+    --theme-surface: rgba(57, 58, 64, .82);
+    --theme-surface-solid: #393a40;
+    --theme-surface-elevated: #45464d;
+    --theme-text: #f5f5f7;
+    --theme-text-secondary: #b6b6bd;
+    --theme-border: rgba(255, 255, 255, .16);
+    --theme-glass-highlight: rgba(255, 255, 255, .12);
+    --theme-shadow: rgba(0, 0, 0, .3);
+    --theme-accent: #0a84ff;
+    --theme-accent-hover: #409cff;
+    --theme-field: rgba(28, 28, 30, .68);
+    --theme-board-start: #554238;
+    --theme-board-end: #302721;
+    --theme-board-frame: #241c17;
+}
+
+/* Tokens de forma e movimento (não mudam com o tema) */
+:root {
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 18px;
+    --transition: 180ms ease;
+    --header-height: 72px;   /* altura da barra superior fixa */
+}
+
+
+/* ==========================================================================
+   2. RESET E BASE GLOBAL
+   ========================================================================== */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;  /* padding e borda entram no cálculo da largura */
+}
+
+html {
+    min-height: 100%;
+    background: var(--theme-bg);
+}
+
+body {
+    min-height: 100vh;
+    margin: 0;
+    overflow-x: hidden;      /* evita rolagem horizontal indesejada */
+    background:
+        radial-gradient(circle at 12% -8%, var(--theme-glass-highlight), transparent 32rem),
+        var(--theme-bg);
+    color: var(--theme-text);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+                 "Helvetica Neue", Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+    color: var(--theme-text);
+    letter-spacing: -.02em;
+}
+
+p {
+    text-indent: 0;
+    color: var(--theme-text-secondary);
+}
+
+a {
+    color: var(--theme-accent);
+    transition: color var(--transition), opacity var(--transition);
+}
+a:hover { color: var(--theme-accent-hover); }
+
+img { max-width: 100%; }
+
+button, input, select, textarea { font: inherit; }
+
+
+/* ==========================================================================
+   3. UTILITÁRIOS
+   ========================================================================== */
+.a {
+    position: absolute;      /* permite posicionar com top/left/right/bottom */
+}
+
+.e {
+    text-align: justify;     /* texto justificado (configurações/ajuda) */
+}
+
+
+/* ==========================================================================
+   4. CABEÇALHO, LOGO, PERFIL, ENGRENAGEM E MENUS
+   ========================================================================== */
+
+/* Barra superior fixa com efeito de vidro */
+#s1 {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 10;
+    width: 100%;
+    height: var(--header-height);
+    opacity: 1;
+    background: color-mix(in srgb, var(--theme-bg) 78%, transparent);
+    border-bottom: 1px solid var(--theme-border);
+    box-shadow: 0 1px 16px rgba(0, 0, 0, .25);
+    -webkit-backdrop-filter: saturate(180%) blur(18px);
+    backdrop-filter: saturate(180%) blur(18px);
+}
+
+/* Itens do cabeçalho: ficam fixos junto com a barra */
+#logo,
+#perfil,
+#perfil2,
+#eng {
+    position: fixed;
+    z-index: 20;
+    object-fit: contain;
+    cursor: pointer;
+    filter: saturate(.75);
+    transition: transform var(--transition), opacity var(--transition);
+}
+
+#logo   { top: 16px; left: 28px;  width: 150px; height: 42px; }
+#perfil { top: 16px; right: 84px; width: 40px;  height: 40px; }  /* nova redação / redações */
+#perfil2{ top: 16px; right: 84px; width: 40px;  height: 40px; }  /* index */
+#eng    { top: 19px; right: 28px; width: 34px;  height: 34px; }  /* engrenagem */
+
+#logo:hover,
+#perfil:hover,
+#perfil2:hover,
+#eng:hover {
+    opacity: .78;
+    transform: scale(1.04);
+}
+
+/* Menus suspensos (começam ocultos; o JS alterna o display) */
+#menu,
+#menu_p {
+    position: fixed;
+    top: 62px;
+    right: 24px;
+    z-index: 30;
+    display: none;
+    width: 210px;
+    height: auto;
+    padding: 8px;
+    border: 1px solid var(--theme-border);
+    border-radius: var(--radius-md);
+    background:
+        linear-gradient(135deg, var(--theme-glass-highlight), transparent 45%),
+        var(--theme-surface);
+    box-shadow: 0 18px 45px var(--theme-shadow);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+}
+
+/* Link "sair" dentro do menu do perfil */
+#sair {
+    position: static;
+    display: block;
+    width: 100%;
+    height: auto;
+    padding: 9px 12px;
+    border-radius: var(--radius-sm);
+    color: var(--theme-text) !important;
+    font-size: 14px;
+    text-align: left;
+    text-decoration: none;   /* esconde o sublinhado do link */
+}
+#sair:hover { background: var(--theme-surface-elevated); }
+
+
+/* ==========================================================================
+   5. CONTROLES: BOTÕES, INPUTS, TEXTAREAS
+   ========================================================================== */
+
+/* Botões "Black Glass" — vale para todos, exceto os post-its */
+button:not(.post-it),
+.back-link {
+    border: 1px solid rgba(255, 255, 255, .12);
+    border-radius: 10px;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, .075), rgba(255, 255, 255, .018)),
+        rgba(20, 20, 22, .72);
+    color: #f5f5f7;
+    cursor: pointer;
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, .35),
+        inset 0 1px 0 rgba(255, 255, 255, .08),
+        inset 0 -1px 0 rgba(0, 0, 0, .32);
+    -webkit-backdrop-filter: blur(18px) saturate(125%);
+    backdrop-filter: blur(18px) saturate(125%);
+    transition: background var(--transition), border-color var(--transition),
+                box-shadow var(--transition), transform var(--transition),
+                filter var(--transition);
+}
+
+button:not(.post-it):hover,
+.back-link:hover {
+    border-color: rgba(255, 255, 255, .2);
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, .12), rgba(255, 255, 255, .035)),
+        rgba(38, 38, 41, .82);
+    filter: brightness(1.08);
+    transform: translateY(-1px);
+}
+
+button:not(.post-it):active,
+.back-link:active {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .3), inset 0 1px 2px rgba(0, 0, 0, .3);
+    transform: translateY(0);
+}
+
+button:disabled {
+    cursor: not-allowed;
+    opacity: .5;
+    filter: grayscale(.35);
+}
+
+/* Botões primários (azul) */
+button.bf:not(.post-it),
+button.botao-entrar {
+    border-color: rgba(74, 161, 255, .55);
+    background:
+        linear-gradient(180deg, rgba(64, 156, 255, .62), rgba(10, 84, 170, .72)),
+        rgba(10, 70, 145, .72);
+    color: #fff;
+    box-shadow:
+        0 8px 25px rgba(0, 83, 180, .3),
+        inset 0 1px 0 rgba(255, 255, 255, .16),
+        inset 0 -1px 0 rgba(0, 0, 0, .28);
+}
+button.bf:not(.post-it):hover,
+button.botao-entrar:hover {
+    border-color: rgba(111, 184, 255, .72);
+    background:
+        linear-gradient(180deg, rgba(86, 170, 255, .72), rgba(16, 100, 195, .8)),
+        rgba(10, 84, 170, .78);
+}
+
+/* Link de voltar com seta */
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 40px;
+    padding: 9px 16px;
+    text-decoration: none;
+}
+.back-link::before {
+    content: "\2190";        /* seta ← */
+    font-size: 18px;
+    line-height: 1;
+}
+
+/* Foco visível para navegação por teclado */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+.back-link:focus-visible {
+    outline: 2px solid rgba(10, 132, 255, .7);
+    outline-offset: 3px;
+}
+
+/* Campos de texto */
+input:not([type="radio"]):not([type="checkbox"]),
+select,
+textarea {
+    max-width: 100%;
+    border: 1px solid var(--theme-border);
+    border-radius: var(--radius-sm);
+    background:
+        linear-gradient(135deg, var(--theme-glass-highlight), transparent 42%),
+        var(--theme-field);
+    color: var(--theme-text);
+    box-shadow: inset 0 1px 0 var(--theme-glass-highlight);
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+input:not([type="radio"]):not([type="checkbox"]),
+select {
+    min-height: 42px;
+    padding: 9px 12px;
+}
+
+textarea { padding: 12px; }
+
+input::placeholder,
+textarea::placeholder { color: var(--theme-text-secondary); }
+
+input:not([type="radio"]):not([type="checkbox"]):focus,
+select:focus,
+textarea:focus {
+    border-color: var(--theme-accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--theme-accent) 22%, transparent);
+    outline: none;
+}
+
+input[type="radio"],
+input[type="checkbox"] { accent-color: var(--theme-accent); }
+
+/* Superfícies genéricas (vidro) usadas em várias páginas */
+.quadro,
+.caixa,
+.container,
+.cartao-login,
+.folha {
+    border: 1px solid var(--theme-border);
+    border-radius: var(--radius-lg);
+    background:
+        linear-gradient(135deg, var(--theme-glass-highlight), transparent 42%),
+        var(--theme-surface);
+    color: var(--theme-text);
+    box-shadow: 0 18px 45px var(--theme-shadow), inset 0 1px 0 var(--theme-glass-highlight);
+    -webkit-backdrop-filter: blur(20px) saturate(125%);
+    backdrop-filter: blur(20px) saturate(125%);
+}
+
+
+/* ==========================================================================
+   6. LOGIN E CADASTRO
+   Cartão com imagem à esquerda e formulário à direita.
+   ========================================================================== */
+
+/* Centraliza o cartão na tela, abaixo do cabeçalho */
+.container-central {
+    display: grid;
+    min-height: 100vh;
+    place-items: center;
+    padding: calc(var(--header-height) + 24px) 20px 32px;
+}
+
+.cartao-login {
+    display: flex;                              /* imagem e formulário lado a lado */
+    width: min(880px, 100%);
+    min-height: 430px;
+    margin: 0;
+    overflow: hidden;                           /* imagem não invade o formulário */
+}
+
+/* Coluna da imagem (metade do cartão) */
+.lado-imagem {
+    flex: 0 0 50%;
+    max-width: 50%;
+    min-height: 410px;
+    background-color: #e0e0e0;                  /* cor enquanto a imagem carrega */
+}
+.lado-imagem img {
+    position: static;                           /* anula o .a herdado */
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;                          /* preenche sem deformar */
+}
+#livro,
+#computador {                                   /* imagens de login e cadastro */
+    width: 100%;
+    height: 100%;
+    left: auto;
+    bottom: auto;
+}
+
+/* Coluna do formulário (login e cadastro) */
+.lado-formulario,
+.lado-formulario2 {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 40px;
+    position: static;
+}
+
+.lado-formulario h1,
+.lado-formulario2 h1 {
+    margin: 0 0 4px;
+    font-size: 30px;
+}
+
+.descricao {
+    margin-bottom: 30px;
+    color: var(--theme-text-secondary) !important;
+    font-size: .85rem;
+    line-height: 1.4;
+    text-align: center;
+}
+
+.formulario-login {
+    width: 100%;
+    max-width: 320px;
+}
+
+.grupo-campo {
+    position: relative;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.grupo-campo input,
+.grupo-campo select.select-customizado {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 20px;
+    font-size: .9rem;
+}
+
+.grupo-campo select.select-customizado {
+    cursor: pointer;
+    appearance: none;                           /* remove a seta padrão */
+}
+
+/* Ícone de mostrar/ocultar senha */
+.icone-olho {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    color: var(--theme-text-secondary);
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
+.botao-entrar {
+    width: 100%;
+    min-height: 44px;
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: var(--radius-sm);
+    font-size: .95rem;
+    font-weight: bold;
+}
+
+.texto-cadastro {
+    margin-top: 15px;
+    color: var(--theme-text-secondary);
+    font-size: .8rem;
+    text-align: center;
+}
+.texto-cadastro a {
+    color: var(--theme-text-secondary);
+    font-weight: 500;
+    text-decoration: underline;
+}
+
+/* Campos legados posicionados à mão (só valem dentro de contêiner posicionado) */
+#email,
+#senha {
+    left: 80px;
+    width: 250px;
+    max-width: 100%;
+    height: 40px;
+    padding-left: 20px;
+    border-radius: 20px;
+}
+#email { top: 50px; }
+#senha { top: 120px; }
+
+/* Mensagem de erro de cadastro e botão de voltar */
+#EC { top: 180px; left: 100px; color: var(--theme-text); }
+#vr { top: 20px; width: 60px; height: 60px; cursor: pointer; }
+
+
+/* ==========================================================================
+   7. TELA INICIAL
+   7a. Quadro de atividades (post-its)
+   7b. Layout legado (#caixa4, #nr, #r, #d)
+   ========================================================================== */
+
+/* 7a. Quadro de cortiça com post-its clicáveis */
+.activity-board {
+    position: relative !important;
+    top: 0 !important;
+    left: 0 !important;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));   /* 3 post-its lado a lado */
+    align-items: center;
+    gap: 28px;
+    width: min(1060px, calc(100% - 48px)) !important;
+    min-height: 560px;
+    margin: 142px auto 42px;
+    padding: 78px 56px 58px;
+    overflow: hidden;
+    border: 12px solid var(--theme-board-frame);
+    border-radius: 10px;
+    background:
+        radial-gradient(circle at 18% 22%, rgba(255, 255, 255, .055) 0 1px, transparent 2px),
+        radial-gradient(circle at 76% 68%, rgba(0, 0, 0, .2) 0 1px, transparent 2px),
+        radial-gradient(circle at 50% 8%, rgba(255, 255, 255, .05), transparent 34%),
+        linear-gradient(135deg, var(--theme-board-start), var(--theme-board-end) 72%);
+    background-size: 21px 25px, 29px 33px, auto, auto;
+    box-shadow:
+        inset 0 0 0 2px rgba(255, 255, 255, .06),
+        inset 0 0 44px rgba(0, 0, 0, .42),
+        0 24px 50px rgba(0, 0, 0, .44);
+}
+
+/* Textura de fibras sobre o quadro */
+.activity-board::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    opacity: .3;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        102deg, transparent 0 22px, rgba(255, 255, 255, .04) 23px, transparent 25px 49px);
+}
+
+/* Título do quadro (ocupa a linha inteira do grid) */
+.activity-board-heading {
+    position: relative;
+    z-index: 1;
+    grid-column: 1 / -1;
+    margin: -24px 0 4px;
+    text-align: center;
+    text-shadow: 0 1px 2px rgba(43, 22, 11, .35);
+}
+.activity-board-heading h1 {
+    margin: 2px 0 3px;
+    color: #f5f5f7;
+    font-size: clamp(26px, 3vw, 38px);
+    font-weight: 700;
+}
+.activity-board-heading p {
+    margin: 0;
+    color: #98989d;
+    font-size: 14px;
+}
+.activity-board-kicker {
+    color: #a1a1a6;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+}
+
+/* Post-it (botão) */
+.post-it {
+    position: relative !important;
+    z-index: 1;
+    top: auto !important;
+    left: auto !important;
+    display: grid;
+    place-items: center;
+    width: 100% !important;
+    min-height: 190px;
+    margin: 0;
+    padding: 48px 22px 28px !important;
+    border: 0 !important;
+    border-radius: 2px 4px 3px 5px;
+    color: #242426;
+    font-size: 19px;
+    font-weight: 700;
+    letter-spacing: -.01em;
+    line-height: 1.2;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 5px 12px 15px rgba(0, 0, 0, .42), 0 2px 2px rgba(0, 0, 0, .22);
+    transform: rotate(-1.8deg);
+    transition: transform 220ms ease, box-shadow 220ms ease, filter 220ms ease;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;                      /* post-it é papel, não vidro */
+}
+
+/* Tachinha */
+.post-it::before {
+    content: "";
+    position: absolute;
+    top: 14px;
+    left: 50%;
+    width: 16px;
+    height: 16px;
+    border: 1px solid rgba(55, 55, 55, .28);
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 28%, #fff 0 8%, #d6d8dc 18%, #7c8188 62%, #454951 100%);
+    box-shadow: 1px 3px 4px rgba(26, 14, 8, .35), inset 1px 1px 1px rgba(255, 255, 255, .8);
+    transform: translateX(-50%);
+}
+
+/* Brilho suave sobre o papel */
+.post-it::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    opacity: .34;
+    pointer-events: none;
+    background: linear-gradient(135deg, rgba(255, 255, 255, .3), transparent 36%, rgba(80, 50, 20, .08));
+}
+
+.post-it:hover {
+    z-index: 3;
+    filter: saturate(1.04);
+    box-shadow: 8px 19px 24px rgba(0, 0, 0, .54), 0 3px 4px rgba(0, 0, 0, .24);
+    transform: translateY(-7px) rotate(0deg) scale(1.015);
+}
+.post-it:active { transform: translateY(-2px) rotate(0deg) scale(.995); }
+
+/* Cores e inclinações individuais */
+.post-it-yellow { background: #f4d96b; transform: rotate(-2deg); }
+.post-it-blue   { background: #79aee8; transform: rotate(1.3deg); }
+.post-it-coral  { background: #e99bb2; transform: rotate(-.8deg); }
+
+.board-decoration { display: none; }
+
+/* 7b. Layout legado (antes do quadro de atividades) */
+#caixa4 {
+    top: 140px;
+    left: 20%;
+    width: 850px;
+    max-width: 100%;
+    height: 550px;
+}
+
+/* Cartões de atalho em estilo caderno pautado */
+#nr,
+#r,
+#d {
+    width: 250px;
+    height: 180px;
+    padding: 18px 18px 100px;
+    border-radius: 8px;
+    background-color: #ffffff;
+    background-image: repeating-linear-gradient(
+        to bottom, transparent 0, transparent 29px, #383838c7 30px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .18);
+    color: #1d1d1f;
+    font-size: 18px;
+    text-align: center;
+    cursor: pointer;
+}
+#nr { top: 60px; left: 20px;  }   /* Nova Redação */
+#r  { top: 60px; left: 300px; }   /* Redações */
+#d  { top: 60px; left: 580px; }   /* Configurações */
+
+/* Atalhos legados de posição */
+#al1 { top: 60px;  left: 120px; }
+#al2 { top: 60px;  left: 400px; }
+#al3 { top: 60px;  left: 680px; }
+#al4 { top: 310px; left: 120px; }
+
+
+/* ==========================================================================
+   8. LISTA DE REDAÇÕES (CARDS)
+   ========================================================================== */
+.container-redacoes {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));  /* colunas automáticas */
+    gap: 18px;
+    margin: 0;
+    padding: 130px 7vw 48px;
+}
+
+.folha {
+    width: auto;
+    min-height: 190px;
+    padding: 22px;
+    text-align: center;
+    transition: transform var(--transition), box-shadow var(--transition);
+}
+.folha:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px var(--theme-shadow);
+}
+.folha h3 { margin: 14px 0 4px; overflow-wrap: anywhere; }
+
+.icone {
+    color: var(--theme-accent);
+    font-size: 42px;
+    line-height: 1;
+}
+
+.acoes {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+/* Títulos legados da página de redações */
+#pr   { top: 490px; left: 650px; width: 200px; height: 30px; }
+#tit1 {
+    top: 150px;
+    left: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 300px;
+    height: 70px;
+    font-size: 40px;
+}
+
+
+/* ==========================================================================
+   9. NOVA REDAÇÃO
+   Etapa 1: escolha do tema (#caixa3). Etapa 2: escrita em 3 partes
+   (#introducao, #desenvolvimento, #conclusao) dentro de #criaredacao.
+   ========================================================================== */
+
+/* Etapa 1 — caixa do tema */
+#caixa3 {
+    top: 220px;
+    left: 50%;
+    display: block;
+    width: min(1000px, calc(100% - 32px));
+    height: auto;
+    min-height: 240px;                          /* mantém a altura da caixa, já que os filhos são absolutos */
+    transform: translateX(-50%);                /* centraliza na horizontal */
+}
+
+#criartema {                                    /* título "Qual o tema..." */
+    top: -80px;
+    left: 50%;
+    width: max-content;
+    max-width: 100%;
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    text-align: center;
+    transform: translateX(-50%);
+}
+
+#tema {                                         /* campo do tema */
+    top: 45px;
+    left: 50%;
+    width: min(880px, calc(100% - 70px));
+    height: 60px;
+    padding-top: 23px;
+    border-radius: 40px;
+    font-size: clamp(1.1rem, 2vw, 1.75rem);
+    text-align: center;
+    transform: translateX(-50%);
+}
+
+#lapis {                                        /* botão do lápis */
+    top: 50px;
+    right: 18px;
+    width: 50px;
+    height: 50px;
+    border: 3px solid rgba(0, 0, 0, .436);
+    border-radius: 30px;
+    cursor: pointer;
+}
+
+/* Etapa 2 — área de escrita (começa oculta; o JS exibe) */
+#criaredacao {
+    top: 80px;
+    left: 50%;
+    display: none;
+    width: min(1200px, calc(100% - 20px));
+    min-height: 695px;
+    transform: translateX(-50%);
+}
+
+#resultado {                                    /* tema escolhido */
+    top: 40px;
+    left: 50%;
+    width: min(750px, calc(100% - 30px));
+    height: 60px;
+    border-radius: 8px;
+    font-size: clamp(1.1rem, 2vw, 1.6rem);
+    text-align: center;
+    resize: none;
+    transform: translateX(-50%);
+}
+
+/* As três caixas de escrita compartilham a mesma base */
+#introducao,
+#desenvolvimento,
+#conclusao {
+    position: relative;                         /* mantém os botões dentro do bloco */
+    top: 220px;
+    left: 50%;
+    width: min(1200px, calc(100% - 24px));
+    text-align: center;
+    transform: translateX(-50%);
+}
+#desenvolvimento,
+#conclusao { display: none; }                   /* só a introdução aparece de início */
+
+#texto1,
+#texto2,
+#texto3 {
+    width: min(1040px, 100%);
+    height: 380px;
+    font-size: 16px;
+    resize: none;                               /* usuário não redimensiona */
+}
+
+/* Botões de navegação entre etapas: base compartilhada */
+#cr1, #cr2, #cr3, #cr4 {
+    position: relative;
+    top: 20px;
+    display: inline-block;
+    width: 160px;
+    height: 45px;
+    margin-top: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+#cr1 { left: auto; right: 60%; }                /* avançar */
+#cr2 { left: auto; right: 0; }                  /* avançar */
+#cr3,
+#cr4 { left: 0; right: auto; margin-right: 20px; }  /* retornar */
+
+/* Botão "Avançar" da tela do tema */
+#cr {
+    left: 82%;
+    display: block;
+    width: 160px;
+    height: 45px;
+    margin: 180px auto 0;                       /* aumente o primeiro valor para descer o botão */
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Indicador de carregamento enquanto a IA corrige */
+#carregando {
+    top: 390px;
+    left: 50%;
+    display: none;
+    width: 50px;
+    height: 50px;
+    transform: translateX(-50%);
+}
+
+
+/* ==========================================================================
+   10. DESAFIO
+   ========================================================================== */
+.titulo { top: -95px; left: 92px; font-size: 30px; }   /* título (nova redação e desafio) */
+.frase  { top: -40px; left: 92px; }                    /* frase de efeito */
+
+#explicacao,
+#espera {
+    border: 1px solid var(--theme-border);
+    border-radius: var(--radius-lg);
+    background: var(--theme-surface);
+    box-shadow: 0 12px 32px var(--theme-shadow);
+}
+
+#explicacao {
+    bottom: 10%;
+    left: 200px;
+    width: 70%;
+    height: 70%;
+    padding-bottom: 20px;
+    text-align: justify;
+}
+
+#titl3 { top: 50px; left: 320px; }                     /* título da página */
+
+#ex1,
+#ex2 {                                                 /* parágrafos explicativos */
+    right: 20px;
+    padding: 0 50px;
+    font-size: 18px;
+    text-align: justify;
+}
+#ex1 { top: 150px; }
+#ex2 { top: 220px; }
+
+/* Botões de dificuldade */
+#fa, #me, #di, #se {
+    width: 240px;
+    height: 70px;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+}
+#fa { bottom: 150px; left: 270px; }                    /* fácil */
+#me { bottom: 150px; left: 590px; }                    /* médio */
+#di { bottom: 50px;  left: 270px; }                    /* difícil */
+#se { bottom: 50px;  left: 590px; }                    /* sem tempo */
+
+#cronometro { top: 140px; right: 250px; }
+
+/* Tela de espera (começa oculta) */
+#espera {
+    top: 130px;
+    left: 340px;
+    display: none;
+    width: 800px;
+    height: 470px;
+}
+#ex4 { bottom: 200px; left: 40px;  padding-right: 70px; }
+#ex5 { bottom: 280px; left: 200px; }
+
+
+/* ==========================================================================
+   11. CONFIGURAÇÕES
+   11a. Janela principal e cabeçalho de perfil
+   11b. Grade de atalhos (Fontes, Temas, Sobre, Ajuda)
+   11c. Painéis secundários
+   11d. Botão de voltar
+   ========================================================================== */
+
+/* 11a. Janela principal */
+.pagina-configuracoes {
+    min-height: 100vh;
+    background: var(--theme-bg);
+    color: var(--theme-text);
+}
+
+.configuracoes-tela,
+.pagina-configuracoes #configuracoes {
+    position: absolute;
+    top: 92px;                                  /* abaixo da barra fixa */
+    left: 50%;
+    display: flex;
+    flex-direction: column;                     /* cabeçalho em cima, conteúdo embaixo */
+    width: min(1120px, calc(100% - 48px));
+    height: auto;
+    min-height: calc(100vh - 122px);
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid var(--theme-border);
+    border-radius: var(--radius-lg);
+    background: var(--theme-bg-secondary);
+    color: var(--theme-text);
+    box-shadow: 0 24px 60px var(--theme-shadow);
+    transform: translateX(-50%);                /* centraliza na horizontal */
+}
+
+/* Cabeçalho com avatar e informações da conta */
+.configuracoes-cabecalho {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 104px;
+    padding: 24px 34px;
+    background: var(--theme-surface-solid);
+    border-bottom: 1px solid var(--theme-border);
+}
+
+.perfil-configuracoes {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+}
+.perfil-configuracoes img {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+}
+.perfil-configuracoes div {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;                               /* permite quebrar texto longo */
+}
+.perfil-configuracoes strong {
+    color: var(--theme-text);
+    font-size: 16px;
+    font-weight: 650;
+}
+.perfil-configuracoes span {
+    margin-top: 3px;
+    color: var(--theme-text-secondary);
+    font-size: 11px;
+}
+
+.atalhos-cabecalho {
+    display: flex;
+    gap: 18px;
+    color: var(--theme-text-secondary);
+    font-size: 12px;
+}
+
+/* Área de conteúdo */
+.conteudo-configuracoes {
+    position: relative;
+    flex: 1;
+    padding: 42px 52px 52px;
+    background: var(--theme-bg-secondary);
+}
+
+#tit3 {                                         /* título da página */
+    position: static;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 8px;
+    color: var(--theme-text);
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: -.3px;
+}
+#tit3 img { width: 42px; height: 42px; }
+
+.descricao-configuracoes {
+    margin: 0 0 30px;
+    color: var(--theme-text-secondary);
+    font-size: 15px;
+}
+
+.resumo-configuracoes {                         /* linha de status */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    padding: 12px 16px;
+    border: 1px solid var(--theme-border);
+    border-radius: 9px;
+    color: var(--theme-text-secondary);
+    font-size: 13px;
+}
+.ponto-status {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #34c759;                        /* verde = ativo */
+}
+
+.rotulo-sidebar {
+    margin: 0 10px 8px;
+    color: var(--theme-text-secondary);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .4px;
+    text-transform: uppercase;
+}
+
+/* 11b. Grade de atalhos: 4 colunas no desktop */
+.atalhos-configuracao {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    max-width: none;
+    margin: 0 auto;
+}
+
+/* Cada atalho (Fontes, Temas, Sobre, Ajuda) */
+.atalho-configuracao,
+#fontes,
+#visual,
+#ajuda,
+#sobre {
+    position: static;                           /* anula o posicionamento absoluto antigo */
+    top: auto;
+    left: auto;
+    right: auto;
+    display: flex;
+    flex-direction: column;                     /* ícone em cima, legenda embaixo */
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    width: 100%;
+    height: auto;
+    min-height: 112px;
+    min-width: 0;
+    padding: 14px 10px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+    background: transparent;
+    color: var(--theme-text);
+    font-size: 14px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color var(--transition), border-color var(--transition),
+                box-shadow var(--transition), transform var(--transition);
+}
+
+.atalho-configuracao:hover {
+    border-color: var(--theme-border);
+    background: var(--theme-surface-elevated);
+    box-shadow: 0 6px 16px var(--theme-shadow);
+    transform: translateY(-1px);
+}
+.atalho-configuracao:active {
+    transform: translateY(0);
+}
+.atalho-configuracao:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--theme-accent) 45%, transparent);
+    outline-offset: 2px;
+}
+
+.atalho-configuracao img {
+    width: 52px;
+    height: 52px;
+    margin-bottom: 4px;
+    object-fit: contain;
+    filter: brightness(.9) saturate(.8);
+}
+
+/* 11c. Painéis secundários (Sobre, Equipe, Fontes, Ajuda, Temas)
+   Começam ocultos; o JS muda o display. Ficam centralizados na tela. */
+#so3, #so9, #fo1, #aj3, #vi1 {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 40;
+    display: none;
+    width: min(760px, calc(100% - 40px));
+    height: auto;
+    min-height: 420px;
+    max-height: calc(100vh - 40px);
+    padding: 38px;
+    overflow-y: auto;                           /* rola se o conteúdo for maior que a tela */
+    border: 1px solid var(--theme-border);
+    border-radius: var(--radius-lg);
+    background: var(--theme-surface-solid);
+    color: var(--theme-text);
+    box-shadow: 0 24px 60px var(--theme-shadow);
+    transform: translate(-50%, -50%);           /* centraliza vertical e horizontalmente */
+}
+
+#so3 h1, #so9 h1, #fo1 h1, #vi1 h1,
+#so3 p,  #so9 p,  #fo1 p,  #vi1 p,  #aj3 p { color: var(--theme-text); }
+
+/* Conteúdo interno (posições legadas relativas ao painel) */
+#so4  { bottom: 200px; left: 30px;  padding-right: 50px; }   /* sobre: parágrafo 1 */
+#so5  { bottom: 280px; left: 290px; }                        /* sobre: título */
+#so6  { bottom: 140px; left: 30px;  padding-right: 50px; }   /* sobre: parágrafo 2 */
+#so7  { bottom: 20px;  left: 40px;  width: 80px; height: 20px; text-align: center; cursor: pointer; }  /* voltar */
+#so8  { bottom: 20px;  right: 40px; width: 80px; height: 20px; text-align: center; cursor: pointer; }  /* equipe */
+#so10 { bottom: 280px; left: 200px; }                        /* equipe: título */
+
+#fo2  { bottom: 350px; left: 60px; }                         /* fontes: título */
+#fo3  { bottom: 300px; left: 30px; padding-right: 50px; }    /* fontes: parágrafo */
+#fo4  {                                                      /* grupo de opções de fonte */
+    bottom: 150px;
+    left: 30px;
+    width: 260px;
+    max-width: 100%;
+    padding: 22px 22px 50px;
+    border: 1px solid var(--theme-border);
+    border-radius: var(--radius-md);
+    background: var(--theme-surface-elevated);
+}
+#textoteste { top: 70px; left: 100px; font-size: 16px; }     /* letra A de teste */
+
+#aj1 { top: 20px;  left: 70px; }
+#aj2 { top: 68px;  left: 1px; }
+#aj4 { top: 80px;  left: 30px; }                             /* ajuda: parágrafo */
+#aj5 {                                                       /* ajuda: campo de texto */
+    bottom: 120px;
+    left: 50px;
+    width: 700px;
+    max-width: 100%;
+    height: 200px;
+    border-radius: 10px;
+}
+
+#vi2 { top: 30px; left: 30px; }                              /* temas: título */
+.vi3 {                                                       /* linha de cada tema */
+    width: 795px;
+    max-width: 100%;
+    height: 50px;
+    border: 1px solid var(--theme-border);
+    border-radius: var(--radius-md);
+    background: var(--theme-surface-elevated);
+    text-align: center;
+}
+#vi4 { top: 150px; }
+#vi5 { top: 200px; }
+#vi6 { top: 250px; }
+
+/* Botões vazios reservados (grade inferior) */
+#nada0, #nada1, #nada2, #nada3 {
+    top: 270px;
+    width: 200px;
+    height: 200px;
+    padding-bottom: 100px;
+    font-size: 20px;
+}
+#nada1 { left: 200px; text-align: center; }
+#nada2 { left: 400px; }
+#nada3 { left: 600px; }
+
+/* 11d. Botão de voltar (fixo no canto) */
+.voltar-configuracao,
+.pagina-configuracoes .voltar-configuracao {
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    z-index: 15;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    width: auto;
+    min-width: 112px;
+    height: 42px;
+    padding: 0 14px;
+    border-radius: 12px;
+}
+.voltar-configuracao img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+
+/* ==========================================================================
+   12. RESPONSIVO
+   Ordem: do maior para o menor breakpoint (desktop-first).
+   ========================================================================== */
+
+/* ---------- Tablets grandes / notebooks pequenos ---------- */
+@media (max-width: 1024px) {
+    #caixa3 { top: 200px; }
+    #criaredacao { width: calc(100% - 16px); }
+    #resultado { width: min(620px, calc(100% - 20px)); }
+    #texto1, #texto2, #texto3 { height: 300px; }
+
+    /* Quadro: post-its mais compactos */
+    .activity-board { padding: 70px 36px 48px; gap: 20px; }
+}
+
+/* ---------- Tablets: desafio deixa de usar posições fixas ---------- */
+@media (max-width: 900px) {
+    /* Elementos do desafio entram no fluxo normal da página */
+    #explicacao, #titl3, #ex1, #ex2, #cronometro,
+    #fa, #me, #di, #se,
+    #espera, #ex4, #ex5 {
+        position: static;
+        width: auto;
+        max-width: 100%;
+        height: auto;
+        margin: 12px auto;
+    }
+    #explicacao { padding: 20px; }
+    #ex1, #ex2 { padding: 0 20px; }
+    #fa, #me, #di, #se { display: block; width: min(320px, 100%); }
+    #espera { padding: 20px; }
+
+    .titulo, .frase { position: static; margin: 12px 0; }
+
+    /* Configurações: atalhos em 2 colunas */
+    .atalhos-configuracao { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* ---------- Celulares grandes e tablets pequenos ---------- */
+@media (max-width: 700px) {
+    /* Cabeçalho mais enxuto */
+    #logo    { left: 16px; width: 125px; }
+    #perfil, #perfil2 { top: 19px; right: 62px; width: 34px; height: 34px; }
+    #eng     { top: 22px; right: 18px; width: 28px; height: 28px; }
+    #menu, #menu_p { right: 12px; }
+
+    /* Login e cadastro: imagem em cima, formulário embaixo */
+    .cartao-login { flex-direction: column; }
+    .lado-imagem {
+        flex: 0 0 170px;
+        max-width: 100%;
+        height: 170px;
+        min-height: 170px;
+    }
+    .lado-formulario,
+    .lado-formulario2 { padding: 30px 22px; }
+
+    /* Quadro de atividades em uma coluna */
+    .activity-board {
+        grid-template-columns: 1fr;
+        gap: 22px;
+        width: calc(100% - 28px) !important;
+        min-height: 0;
+        margin: 112px auto 28px;
+        padding: 52px 22px 34px;
+        border-width: 8px;
+    }
+    .activity-board-heading { margin: -8px 0 8px; }
+    .post-it { min-height: 132px; padding: 42px 20px 24px !important; }
+
+    /* Layout legado da index */
+    #caixa4 { left: 5vw; width: 90vw; height: auto; }
+    #nr, #r, #d {
+        position: static;
+        display: block;
+        width: 100%;
+        height: 92px;
+        margin: 12px 0;
+        padding: 18px;
+    }
+
+    /* Lista de redações */
+    .container-redacoes { grid-template-columns: 1fr; padding: 112px 18px 32px; }
+
+    /* Nova redação */
+    #caixa3 { top: 170px; width: calc(100% - 20px); }
+    #criartema { top: -50px; font-size: 1.8rem; }
+    #tema { width: calc(100% - 70px); font-size: 1.1rem; padding-top: 18px; }
+    #lapis { right: 10px; width: 42px; height: 42px; }
+    #criaredacao { top: 70px; width: calc(100% - 12px); }
+    #resultado { top: 20px; width: calc(100% - 10px); height: auto; padding: 10px; }
+    #introducao, #desenvolvimento, #conclusao { top: 150px; width: calc(100% - 10px); }
+    #texto1, #texto2, #texto3 { width: 100%; height: 220px; }
+
+    /* Botões das etapas ocupam a largura toda e voltam ao fluxo normal */
+    #cr1, #cr2, #cr3, #cr4, #cr {
+        position: static;
+        display: block;
+        width: 100%;
+        margin: 12px 0 0;
+    }
+
+    /* Configurações: painéis secundários sem posições fixas internas */
+    #so4, #so5, #so6, #so7, #so8, #so10,
+    #fo2, #fo3, #fo4, #textoteste,
+    #aj1, #aj2, #aj4, #aj5,
+    #vi2, #vi4, #vi5, #vi6 {
+        position: static;
+        width: auto;
+        margin: 12px 0;
+        padding-right: 0;
+    }
+    #aj5 { width: 100%; }
+    #so3, #so9, #fo1, #aj3, #vi1 {
+        width: calc(100% - 24px);
+        min-height: 360px;
+        padding: 24px;
+    }
+    .pagina-configuracoes #configuracoes,
+    .configuracoes-tela {
+        top: 82px;
+        width: calc(100% - 24px);
+        min-height: calc(100vh - 100px);
+    }
+}
+
+/* ---------- Celulares ---------- */
+@media (max-width: 600px) {
+    .configuracoes-cabecalho { padding: 14px 16px; }
+    .atalhos-cabecalho { display: none; }               /* esconde atalhos auxiliares */
+    .conteudo-configuracoes { padding: 24px 16px 30px; }
+    .atalhos-configuracao { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    #tit3 { font-size: 24px; }
+}
+
+/* ---------- Celulares pequenos ---------- */
+@media (max-width: 480px) {
+    #caixa3 { top: 160px; }
+    #criartema { font-size: 1.5rem; }
+    #tema { width: calc(100% - 58px); height: 52px; }
+    #lapis { width: 38px; height: 38px; }
+    #texto1, #texto2, #texto3 { height: 180px; }
+
+    .atalhos-configuracao { grid-template-columns: 1fr; }    /* 1 coluna */
+    .voltar-configuracao { min-width: 0; padding: 0 12px; }
+}
+
+
+/* ==========================================================================
+   13. ACESSIBILIDADE
+   Respeita quem desativa animações no sistema operacional.
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+        animation-duration: .01ms !important;
+    }
+}

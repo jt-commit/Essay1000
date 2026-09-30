@@ -1,0 +1,43 @@
+body{
+    background-color: #ffd5b3;
+}
+
+.cf{/*cor da fonte*/
+color: rgb(7, 219, 60);/*cor da fonte*/
+}
+.bf{/*botão: uso de fonte*/
+ color: white;/*cor da fonte*/
+ background-color: rgb(7, 219, 60);;/*cor da fonte*/
+}
+.bmf{/*botão do menu: uso de fonte*/
+ background-color: white;/*cor de fundo*/
+}
+.tf{/*cor da textarea*/
+background-color: rgb(255, 255, 255);
+}
+.mf{/*cor do menu*/
+ background: linear-gradient(to bottom, rgb(7, 219, 60)c,white,
+ white,white,white,white);/*cor de fundo*/
+}
+.quadro{ /*cor dor quadro*/
+ background-color: rgb(27, 70, 19);/*cor de fundo*/
+ border: 8px solid rgb(136, 117, 65);/*borda*/
+}
+.c1{/*cor do fundo de configurações*/
+background-color: rgb(17, 112, 41);;/*cor da fonte*/
+}
+.cfc{/*cor da fonte de configurações*/
+ color: white;
+}
+.bd{/*borda da desafio*/
+border: 1px solid rgb(0, 62, 32);
+}
+.ed{/*pagina de espera, desafio*/
+background-color: rgb(23, 141, 52);;/*cor da fonte*/
+}
+.fd{/*fonte do desafio*/
+color: white;
+}
+#s1{
+    background: linear-gradient(to left, #005e2f, rgb(7, 219, 60));
+}

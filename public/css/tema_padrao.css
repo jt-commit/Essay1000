@@ -1,0 +1,40 @@
+body{
+    background-color: #ffffff;
+}
+
+.cf{/*cor da fonte*/
+color: rgb(36, 105, 196);/*cor da fonte*/
+}
+.bf{/*botão: uso de fonte*/
+ color: white;/*cor da fonte*/
+ background-color: rgb(36, 105, 196);;/*cor da fonte*/
+}
+.tf{/*cor da textarea*/
+background-color: rgb(245, 245, 245);
+}
+.mf{/*cor do menu*/
+ background: linear-gradient(to bottom, #00020c,white,
+ white,white,white,white);/*cor de fundo*/
+}
+.quadro{ /*cor dor quadro*/
+ background-color: rgb(43, 65, 43);/*cor de fundo*/
+ border: 8px solid rgb(27, 22, 9);/*borda*/
+}
+.c1{/*cor do fundo de configurações*/
+ background-color:#165A9E;
+}
+.cfc{/*cor da fonte de configurações*/
+ color: white;
+}
+.bd{/*borda da desafio*/
+border: 1px solid rgb(36, 105, 196);
+}
+.ed{/*pagina de espera, desafio*/
+ background-color: #165A9E;
+}
+.fd{/*fonte do desafio*/
+color: white;
+}
+#s1{/*cabeçalho*/
+    background: linear-gradient(to right, #165A9E, black);
+}
