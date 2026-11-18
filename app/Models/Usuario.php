@@ -7,11 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class Usuario extends Model
 {
     protected $table = 'usuario';
+
     protected $primaryKey = 'USU_CODIGO';
+
     public $timestamps = false;
 
     protected $fillable = [
-        'USU_NOME', 'USU_SENHA', 'USU_EMAIL', 'USU_FONTE', 'USU_TEM_CODIGO'
+        'USU_NOME', 'USU_SENHA', 'USU_EMAIL', 'USU_FONTE', 'USU_TEM_CODIGO',
+        'USU_ESCOLARIDADE', 'USU_LOCAL-ESTUDO',
     ];
 
     public function tema()

@@ -1,34 +1,79 @@
 @extends('layouts.app')
 @section('content')
 
-{{--
-    View: redacoes/show.blade.php
-    Função: Mostra os detalhes completos de UMA redação específica —
-    tema, introdução, desenvolvimento, conclusão, e a nota da correção
-    (se já tiver sido feita). Também oferece um link pra contestar a nota
-    via debate com a IA, e um link de volta pra lista de redações.
---}}
+{{-- A visualização da redação fica separada da tela de correção. --}}
+<main class="pagina-correcao pagina-redacao">
+    <header class="cabecalho-correcao">
+        <a class="voltar-correcao" href="{{ route('redacoes.index') }}">
+            <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+            Minhas redações
+        </a>
+        <p class="rotulo-correcao">REDAÇÃO ENEM</p>
+        <h1>{{ $redacao->RED_TEMA }}</h1>
+        <div class="meta-correcao">
+            <span><i class="fa-regular fa-file-lines" aria-hidden="true"></i> Texto dissertativo</span>
+            @if ($correcao)
+                <strong><i class="fa-solid fa-check" aria-hidden="true"></i> Corrigida</strong>
+            @endif
+        </div>
+    </header>
 
+    <nav class="abas-correcao" aria-label="Ações da redação">
+        <a class="ativa" href="#redacao"><i class="fa-regular fa-file-lines" aria-hidden="true"></i> Redação</a>
+        @if ($correcao)
+            <a href="{{ route('correcao.show', $redacao) }}">
+                <i class="fa-regular fa-square-check" aria-hidden="true"></i> Correção
+            </a>
+        @endif
+    </nav>
 
-<h1>{{$redacao->RED_TEMA }}</h1>
+    <div class="conteudo-correcao">
+        <article class="folha-correcao" id="redacao">
+            <div class="cabecalho-folha">
+                <span>CADERNO DE REDAÇÃO</span>
+                <span>TEXTO DISSERTATIVO</span>
+            </div>
 
-<div class="Corpo da redação">
-<p>Introdução: {{$redacao->RED_INTRODUCAO}}</p>
-<P>Desenvolvimento: {{$redacao->RED_DESENVOLVIMENTO}}</P>
-<p>Conclusão: {{$redacao->RED_CONCLUSAO}}</p>
-</div>
-@if($correcao)
+            <section class="secao-redacao">
+                <span class="numero-secao">01</span>
+                <div>
+                    <h2>Introdução</h2>
+                    <p>{{ $redacao->RED_INTRODUCAO }}</p>
+                </div>
+            </section>
 
-<div class="nota">
-  <p>Nota: {{$correcao->COR_NOTA}} /1000</p>
-</div>
-<a href="{{route('debate.show', $redacao)}}">Constestar Nota</a>
-@else
-<p>Correção ainda não disponivel</p>
-@endif
+            <section class="secao-redacao">
+                <span class="numero-secao">02</span>
+                <div>
+                    <h2>Desenvolvimento</h2>
+                    <p>{{ $redacao->RED_DESENVOLVIMENTO }}</p>
+                </div>
+            </section>
 
-<a href="{{ route('redacoes.index')}}">Voltar</a>
+            <section class="secao-redacao">
+                <span class="numero-secao">03</span>
+                <div>
+                    <h2>Conclusão</h2>
+                    <p>{{ $redacao->RED_CONCLUSAO }}</p>
+                </div>
+            </section>
+        </article>
 
+        <aside class="painel-lateral-correcao">
+            <section class="bloco-correcao bloco-notas">
+                <i class="fa-solid fa-pen-nib" aria-hidden="true"></i>
+                <h2>Meu bloco</h2>
+                <p>Revise suas ideias e acompanhe a evolução do seu texto.</p>
+            </section>
 
+            <section class="bloco-correcao bloco-comentarios">
+                <h2><i class="fa-solid fa-list-check" aria-hidden="true"></i> Estrutura da redação</h2>
+                <p><i class="fa-regular fa-square-check" aria-hidden="true"></i> Introdução</p>
+                <p><i class="fa-regular fa-square-check" aria-hidden="true"></i> Desenvolvimento</p>
+                <p><i class="fa-regular fa-square-check" aria-hidden="true"></i> Conclusão</p>
+            </section>
+        </aside>
+    </div>
 
+</main>
 @endsection

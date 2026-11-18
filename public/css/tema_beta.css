@@ -1,43 +1,63 @@
+/*
+ * TEMA BETA (HÍBRIDO)
+ * Carregado depois de style.css quando o usuário seleciona tema_beta.
+ * Mantém os tokens e seletores legados para cores do corpo, menus, quadro,
+ * configurações, desafio e cabeçalho.
+ */
+
+/* Fundo global do tema beta. */
 body{
     background-color: #ffd5b3;
 }
 
+/* Texto de componentes que usam a classe legada cf. */
 .cf{/*cor da fonte*/
 color: rgb(7, 219, 60);/*cor da fonte*/
 }
+/* Texto e preenchimento dos botões legados bf. */
 .bf{/*botão: uso de fonte*/
  color: white;/*cor da fonte*/
  background-color: rgb(7, 219, 60);;/*cor da fonte*/
 }
+/* Preenchimento dos botões internos do menu. */
 .bmf{/*botão do menu: uso de fonte*/
  background-color: white;/*cor de fundo*/
 }
+/* Preenchimento das áreas de texto legadas tf. */
 .tf{/*cor da textarea*/
 background-color: rgb(255, 255, 255);
 }
+/* Fundo do menu suspenso identificado pela classe mf. */
 .mf{/*cor do menu*/
  background: linear-gradient(to bottom, rgb(7, 219, 60)c,white,
  white,white,white,white);/*cor de fundo*/
 }
+/* Fundo e moldura do quadro de atalhos da tela inicial. */
 .quadro{ /*cor dor quadro*/
  background-color: rgb(27, 70, 19);/*cor de fundo*/
  border: 8px solid rgb(136, 117, 65);/*borda*/
 }
+/* Superfície de painéis e controles de configuração. */
 .c1{/*cor do fundo de configurações*/
 background-color: rgb(17, 112, 41);;/*cor da fonte*/
 }
+/* Cor do texto dentro das áreas de configuração. */
 .cfc{/*cor da fonte de configurações*/
  color: white;
 }
+/* Borda dos painéis do modo desafio. */
 .bd{/*borda da desafio*/
 border: 1px solid rgb(0, 62, 32);
 }
+/* Fundo do painel explicativo e do estado de espera do desafio. */
 .ed{/*pagina de espera, desafio*/
 background-color: rgb(23, 141, 52);;/*cor da fonte*/
 }
+/* Texto dos elementos identificados como conteúdo do desafio. */
 .fd{/*fonte do desafio*/
 color: white;
 }
+/* Gradiente da barra fixa superior. */
 #s1{
     background: linear-gradient(to left, #005e2f, rgb(7, 219, 60));
 }

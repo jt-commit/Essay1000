@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +9,7 @@
 </head>
 <body>
 
+    <!-- Cabeçalho e cartão preservam a estrutura do login.php original. -->
     <div id="s1" class="a"></div>
     <img src="{{ asset('assets/logo.png') }}" id="logo" class="a">
 
@@ -16,10 +17,10 @@
         <div class="cartao-login">
 
             <div class="lado-imagem">
-                <img src="{{ asset('assets/livro.jpg') }}" id="livro" class="a" alt="Livros">
+                <img src="{{ asset('assets/Folha-enem.png') }}" id="livro" class="a" alt="Folha de redação sobre uma mesa de estudos">
             </div>
 
-            <div class="lado-formulario">
+            <div class="lado-formulario2">
                 <h1>Login</h1>
                 <p class="descricao">Preencha os campos abaixo para entrar em sua conta</p>
 
@@ -31,11 +32,13 @@
                     @csrf
 
                     <div class="grupo-campo">
-                        <input type="email" name="USU_EMAIL" value="{{ old('USU_EMAIL') }}" placeholder="Digite seu e-mail" required>
+                        <i class="fa-regular fa-envelope campo-icone" aria-hidden="true"></i>
+                        <input type="email" id="email" name="USU_EMAIL" value="{{ old('USU_EMAIL') }}" placeholder="Digite seu e-mail" required>
                     </div>
 
                     <div class="grupo-campo">
-                        <input type="password" name="USU_SENHA" placeholder="Digite sua senha" required>
+                        <i class="fa-solid fa-lock campo-icone" aria-hidden="true"></i>
+                        <input type="password" id="senha" name="USU_SENHA" placeholder="Digite sua senha" required>
                     </div>
 
                     <button type="submit" class="botao-entrar">Entrar</button>

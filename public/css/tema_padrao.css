@@ -1,40 +1,59 @@
+/*
+ * TEMA PADRÃO (CLARO)
+ * Carregado depois de style.css quando o usuário seleciona tema_padrao.
+ * Estas regras legadas continuam na cascata e personalizam corpo, controles,
+ * menus, quadro, desafio e faixa superior sem substituir os IDs do markup.
+ */
+
+/* Fundo global da interface no tema claro original. */
 body{
     background-color: #ffffff;
 }
 
+/* Texto de componentes que usam a classe legada cf. */
 .cf{/*cor da fonte*/
 color: rgb(36, 105, 196);/*cor da fonte*/
 }
+/* Texto e preenchimento dos botões legados bf. */
 .bf{/*botão: uso de fonte*/
  color: white;/*cor da fonte*/
  background-color: rgb(36, 105, 196);;/*cor da fonte*/
 }
+/* Preenchimento das áreas de texto legadas tf. */
 .tf{/*cor da textarea*/
 background-color: rgb(245, 245, 245);
 }
+/* Fundo do menu suspenso identificado pela classe mf. */
 .mf{/*cor do menu*/
  background: linear-gradient(to bottom, #00020c,white,
  white,white,white,white);/*cor de fundo*/
 }
+/* Fundo e moldura do quadro de atalhos da tela inicial. */
 .quadro{ /*cor dor quadro*/
  background-color: rgb(43, 65, 43);/*cor de fundo*/
  border: 8px solid rgb(27, 22, 9);/*borda*/
 }
+/* Superfície de painéis e controles de configuração. */
 .c1{/*cor do fundo de configurações*/
  background-color:#165A9E;
 }
+/* Cor do texto dentro das áreas de configuração. */
 .cfc{/*cor da fonte de configurações*/
  color: white;
 }
+/* Borda dos painéis do modo desafio. */
 .bd{/*borda da desafio*/
 border: 1px solid rgb(36, 105, 196);
 }
+/* Fundo do painel explicativo e do estado de espera do desafio. */
 .ed{/*pagina de espera, desafio*/
  background-color: #165A9E;
 }
+/* Texto dos elementos identificados como conteúdo do desafio. */
 .fd{/*fonte do desafio*/
 color: white;
 }
+/* Gradiente da barra fixa superior. */
 #s1{/*cabeçalho*/
     background: linear-gradient(to right, #165A9E, black);
 }

@@ -1,8 +1,13 @@
+/* Carrega o Tailwind CSS para os assets gerados pelo pipeline Vite. */
 @import 'tailwindcss';
 
+/* Inclui templates Blade do framework para que o Tailwind detecte classes usadas na paginação. */
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+
+/* Inclui Views compiladas em cache como fonte adicional de classes Tailwind. */
 @source '../../storage/framework/views/*.php';
 
+/* Personaliza o token de fonte sans-serif exposto pelo tema do Tailwind. */
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';

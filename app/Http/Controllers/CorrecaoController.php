@@ -15,14 +15,17 @@ class CorrecaoController extends Controller
         $correcaoExistente = $redacao->correcao;
 
         if ($correcaoExistente) {
-            return view('correcao.show', ['correcao' => $correcaoExistente]);
+            return view('correcao.show', [
+                'correcao' => $correcaoExistente,
+                'redacao' => $redacao,
+            ]);
         }
 
-        $prompt = "Corrija esta redação do ENEM. Retorne exatamente neste formato:\n\n" .
-            "NOTA: valor entre 0 e 1000\n\nERROS:\n\nSUGESTÕES:\n\nPONTOS FORTES:\n\n" .
-            "Tema:\n{$redacao->RED_TEMA}\n\n" .
-            "Introdução:\n{$redacao->RED_INTRODUCAO}\n\n" .
-            "Desenvolvimento:\n{$redacao->RED_DESENVOLVIMENTO}\n\n" .
+        $prompt = "Corrija esta redação do ENEM. Retorne exatamente neste formato:\n\n".
+            "NOTA: valor entre 0 e 1000\n\nERROS:\n\nSUGESTÕES:\n\nPONTOS FORTES:\n\n".
+            "Tema:\n{$redacao->RED_TEMA}\n\n".
+            "Introdução:\n{$redacao->RED_INTRODUCAO}\n\n".
+            "Desenvolvimento:\n{$redacao->RED_DESENVOLVIMENTO}\n\n".
             "Conclusão:\n{$redacao->RED_CONCLUSAO}";
 
         $resultado = $this->gemini->perguntar($prompt);
@@ -41,6 +44,6 @@ class CorrecaoController extends Controller
             'COR_TEXTO' => $texto,
         ]);
 
-        return view('correcao.show', compact('correcao'));
+        return view('correcao.show', compact('correcao', 'redacao'));
     }
 }

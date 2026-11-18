@@ -1,46 +1,67 @@
+/*
+ * TEMA NOTURNO (ESCURO)
+ * Carregado depois de style.css quando o usuário seleciona tema_noturno.
+ * As classes antigas personalizam textos, botões, campos, menus, quadro,
+ * painéis de desafio e cabeçalho conforme a cascata legada.
+ */
+
+/* Fundo global escuro da interface. */
 body{
     background-color: #000000;
 }
 
+/* Texto de componentes que usam a classe legada cf. */
 .cf{/*cor da fonte*/
 color: rgb(255, 255, 255);/*cor da fonte*/
 }
+/* Texto e preenchimento dos botões legados bf. */
 .bf{/*botão: uso de fonte*/
  color: rgb(0, 0, 0);/*cor da fonte*/
  background-color: rgb(255, 255, 255);;/*cor da fonte*/
 }
+/* Preenchimento dos botões internos do menu. */
 .bmf{/*botão do menu: uso de fonte*/
  background-color: rgb(0, 0, 0);/*cor de fundo*/
 }
+/* Preenchimento das áreas de texto legadas tf. */
 .tf{/*cor da textarea*/
 background-color: rgb(245, 245, 245);
 }
+/* Fundo do menu suspenso identificado pela classe mf. */
 .mf{/*cor do menu*/
  background: linear-gradient(to bottom, #ffffff,
  rgb(0, 0, 0),rgb(0, 0, 0),rgb(0, 0, 0),rgb(0, 0, 0));/*cor de fundo*/
 }
+/* Fundo e moldura do quadro de atalhos da tela inicial. */
 .quadro{ /*cor dor quadro*/
  background-color: rgb(20, 44, 16);/*cor de fundo*/
  border: 8px solid rgb(65, 59, 42);/*borda*/
 }
+/* Superfície de painéis e controles de configuração. */
 .c1{/*cor do fundo de configurações*/
  background-color:#474a4d;
 }
+/* Cor do texto dentro das áreas de configuração. */
 .cfc{/*cor da fonte de configurações*/
  color: white;
 }
+/* Borda dos painéis do modo desafio. */
 .bd{/*borda da desafio*/
 border: 1px solid #474a4d;
 }
+/* Fundo do painel explicativo e do estado de espera do desafio. */
 .ed{/*pagina de espera, desafio*/
  background-color: #474a4d;;
 }
+/* Texto dos elementos identificados como conteúdo do desafio. */
 .fd{/*fonte do desafio*/
 color: white;
 }
+/* Classe auxiliar para texto escuro sobre campos claros. */
 .fn{/*fonte dark*/
 color: black;
 }
+/* Gradiente da barra fixa superior. */
 #s1{/*cabeçalho*/
     background: linear-gradient(to left, #ffffff, black);
 }

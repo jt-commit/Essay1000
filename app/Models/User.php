@@ -2,21 +2,22 @@
 
 namespace App\Models;
 
-use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['USU_NOME', 'USU_SENHA', 'USU_EMAIL', 'USU_FONTE', 'USU_TEM_CODIGO'])]
+#[Fillable(['USU_NOME', 'USU_SENHA', 'USU_EMAIL', 'USU_FONTE', 'USU_TEM_CODIGO', 'USU_ESCOLARIDADE', 'USU_LOCAL-ESTUDO'])]
 #[Hidden(['USU_SENHA'])]
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
     protected $table = 'usuario';
+
     protected $primaryKey = 'USU_CODIGO';
+
     public $timestamps = false;
 
     public function getAuthPassword()
